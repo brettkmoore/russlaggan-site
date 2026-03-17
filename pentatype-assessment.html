@@ -1106,7 +1106,10 @@
         let shuffledQuestions = shuffleArray(questions);
 
         // START ASSESSMENT
+        let assessmentStartTime = null;
+
         function startAssessment() {
+            assessmentStartTime = Date.now();
             document.getElementById('landingScreen').classList.add('hidden');
             document.getElementById('assessmentScreen').classList.remove('hidden');
             showQuestion(0);
@@ -1177,6 +1180,56 @@
 
             // Always show subtype - everyone has a primary + secondary blend
             renderSubtype(primaryType, secondaryType);
+
+            // Send results to Google Sheet webhook
+            const subtypeNames = {
+                'concierge-analyst': 'The Trusted Guide',
+                'concierge-strategist': 'The Empathetic Closer',
+                'concierge-visionary': 'The Connector',
+                'concierge-advocate': 'The Heart',
+                'analyst-concierge': 'The Precision Guide',
+                'analyst-strategist': 'The Precision Player',
+                'analyst-visionary': 'The Thoughtful Expert',
+                'analyst-advocate': 'The Wise Architect',
+                'strategist-concierge': 'The Velvet Hammer',
+                'strategist-analyst': 'The War Room General',
+                'strategist-visionary': 'The Disruptive Innovator',
+                'strategist-advocate': 'The Principled Leader',
+                'visionary-concierge': 'The Empathic Explorer',
+                'visionary-analyst': 'The Research Storyteller',
+                'visionary-strategist': 'The Bold Explorer',
+                'visionary-advocate': 'The Storyteller',
+                'advocate-concierge': 'The Sage Friend',
+                'advocate-analyst': "The Philosopher's Calculator",
+                'advocate-strategist': 'The Moral Disruptor',
+                'advocate-visionary': 'The Deep Listener'
+            };
+            const subtypeKey = `${primaryType}-${secondaryType}`;
+            const subtypeName = subtypeNames[subtypeKey] || `${primaryType}-${secondaryType}`;
+            const timeSpent = assessmentStartTime ? Math.round((Date.now() - assessmentStartTime) / 1000) : 0;
+
+            sendToWebhook({
+                primaryType: types[primaryType].name,
+                secondaryType: types[secondaryType].name,
+                subtypeName: subtypeName,
+                conciergeScore: scores.concierge,
+                analystScore: scores.analyst,
+                strategistScore: scores.strategist,
+                visionaryScore: scores.visionary,
+                advocateScore: scores.advocate,
+                timeSpent: timeSpent,
+                profileURL: `https://russlaggan.com/types/${subtypeKey}.html`
+            });
+        }
+
+        function sendToWebhook(data) {
+            const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyXfS7kaBh9WshxUz-eDDKPBsAYhwBIE71ILyCf6oez45G3pURzZBwjT6EBYS7WqmxUig/exec';
+            fetch(WEBHOOK_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).catch(err => console.log('Webhook error:', err));
         }
 
         function renderTypeCard(typeKey, isPrimary) {
@@ -1270,6 +1323,26 @@
             const email = document.getElementById('emailInput').value;
             if (email) {
                 localStorage.setItem('pentatype-email', email);
+
+                // Send email update to webhook
+                const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+                const primaryType = sorted[0][0];
+                const secondaryType = sorted[1][0];
+                const subtypeKey = `${primaryType}-${secondaryType}`;
+                sendToWebhook({
+                    email: email,
+                    primaryType: types[primaryType].name,
+                    secondaryType: types[secondaryType].name,
+                    subtypeName: document.querySelector('#subtypeText strong')?.textContent || subtypeKey,
+                    conciergeScore: scores.concierge,
+                    analystScore: scores.analyst,
+                    strategistScore: scores.strategist,
+                    visionaryScore: scores.visionary,
+                    advocateScore: scores.advocate,
+                    timeSpent: assessmentStartTime ? Math.round((Date.now() - assessmentStartTime) / 1000) : 0,
+                    profileURL: `https://russlaggan.com/types/${subtypeKey}.html`
+                });
+
                 document.getElementById('emailInput').value = '';
                 document.getElementById('successMessage').classList.remove('hidden');
                 setTimeout(() => {
