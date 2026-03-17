@@ -1182,30 +1182,23 @@
             renderSubtype(primaryType, secondaryType);
 
             // Send results to Google Sheet webhook
-            const subtypeNames = {
-                'concierge-analyst': 'The Trusted Guide',
-                'concierge-strategist': 'The Empathetic Closer',
-                'concierge-visionary': 'The Connector',
-                'concierge-advocate': 'The Heart',
-                'analyst-concierge': 'The Precision Guide',
-                'analyst-strategist': 'The Precision Player',
-                'analyst-visionary': 'The Thoughtful Expert',
-                'analyst-advocate': 'The Wise Architect',
-                'strategist-concierge': 'The Velvet Hammer',
-                'strategist-analyst': 'The War Room General',
-                'strategist-visionary': 'The Disruptive Innovator',
-                'strategist-advocate': 'The Principled Leader',
-                'visionary-concierge': 'The Empathic Explorer',
-                'visionary-analyst': 'The Research Storyteller',
-                'visionary-strategist': 'The Bold Explorer',
-                'visionary-advocate': 'The Storyteller',
-                'advocate-concierge': 'The Sage Friend',
-                'advocate-analyst': "The Philosopher's Calculator",
-                'advocate-strategist': 'The Moral Disruptor',
-                'advocate-visionary': 'The Deep Listener'
+            const subtypeNumbers = {
+                'concierge-analyst': 1, 'concierge-strategist': 2,
+                'concierge-visionary': 3, 'concierge-advocate': 4,
+                'analyst-concierge': 5, 'analyst-strategist': 6,
+                'analyst-visionary': 7, 'analyst-advocate': 8,
+                'strategist-concierge': 9, 'strategist-analyst': 10,
+                'strategist-visionary': 11, 'strategist-advocate': 12,
+                'visionary-concierge': 13, 'visionary-analyst': 14,
+                'visionary-strategist': 15, 'visionary-advocate': 16,
+                'advocate-concierge': 17, 'advocate-analyst': 18,
+                'advocate-strategist': 19, 'advocate-visionary': 20
             };
             const subtypeKey = `${primaryType}-${secondaryType}`;
-            const subtypeName = subtypeNames[subtypeKey] || `${primaryType}-${secondaryType}`;
+            const typeNum = subtypeNumbers[subtypeKey] || '?';
+            const primaryName = types[primaryType].name;
+            const secondaryName = types[secondaryType].name;
+            const subtypeName = `Type ${typeNum}: ${primaryName}-${secondaryName}`;
             const timeSpent = assessmentStartTime ? Math.round((Date.now() - assessmentStartTime) / 1000) : 0;
 
             sendToWebhook({
@@ -1280,35 +1273,26 @@
             const primaryType = types[primary];
             const secondaryType = types[secondary];
 
-            const subtypeNames = {
-                'concierge-analyst': 'The Trusted Guide',
-                'concierge-strategist': 'The Empathetic Closer',
-                'concierge-visionary': 'The Connector',
-                'concierge-advocate': 'The Heart',
-                'analyst-concierge': 'The Precision Guide',
-                'analyst-strategist': 'The Precision Player',
-                'analyst-visionary': 'The Thoughtful Expert',
-                'analyst-advocate': 'The Wise Architect',
-                'strategist-concierge': 'The Velvet Hammer',
-                'strategist-analyst': 'The War Room General',
-                'strategist-visionary': 'The Disruptive Innovator',
-                'strategist-advocate': 'The Principled Leader',
-                'visionary-concierge': 'The Empathic Explorer',
-                'visionary-analyst': 'The Research Storyteller',
-                'visionary-strategist': 'The Bold Explorer',
-                'visionary-advocate': 'The Storyteller',
-                'advocate-concierge': 'The Sage Friend',
-                'advocate-analyst': "The Philosopher's Calculator",
-                'advocate-strategist': 'The Moral Disruptor',
-                'advocate-visionary': 'The Deep Listener'
+            const subtypeNumbers = {
+                'concierge-analyst': 1, 'concierge-strategist': 2,
+                'concierge-visionary': 3, 'concierge-advocate': 4,
+                'analyst-concierge': 5, 'analyst-strategist': 6,
+                'analyst-visionary': 7, 'analyst-advocate': 8,
+                'strategist-concierge': 9, 'strategist-analyst': 10,
+                'strategist-visionary': 11, 'strategist-advocate': 12,
+                'visionary-concierge': 13, 'visionary-analyst': 14,
+                'visionary-strategist': 15, 'visionary-advocate': 16,
+                'advocate-concierge': 17, 'advocate-analyst': 18,
+                'advocate-strategist': 19, 'advocate-visionary': 20
             };
 
             const subtypeKey = `${primary}-${secondary}`;
-            const subtypeName = subtypeNames[subtypeKey] || `The ${primaryType.name} with ${secondaryType.core}`;
+            const typeNum = subtypeNumbers[subtypeKey] || '?';
+            const subtypeName = `Type ${typeNum}: ${primaryType.name}-${secondaryType.name}`;
 
             document.getElementById('subtypeInfo').classList.remove('hidden');
             document.getElementById('subtypeText').innerHTML = `
-                <strong>${subtypeName}</strong> is your hybrid profile. You blend ${primaryType.name}'s ${primaryType.core} with ${secondaryType.name}'s ${secondaryType.core}, creating a unique approach that balances both strengths.
+                <strong>${subtypeName}</strong> — Your primary core is ${primaryType.name} (${primaryType.core}), amplified by your secondary core ${secondaryType.name} (${secondaryType.core}). But remember: you deploy all five communication cores. This combination reveals where you lead from — not all you are.
             `;
 
             // Add "View Full Profile" button
