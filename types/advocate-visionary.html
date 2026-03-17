@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Deep Listener — Pentatype Profile | Russ Laggan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a1929;
+            color: #e2e8f0;
+            line-height: 1.7;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #1E3A5F 0%, #0f2a47 60%, rgba(168, 85, 247, 0.15) 100%);
+            padding: 60px 20px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+            opacity: 0.4;
+            animation: subtleFloat 20s ease-in-out infinite;
+        }
+
+        @keyframes subtleFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, 1%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .brand-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            opacity: 0.8;
+        }
+
+        .brand-bar span {
+            font-size: 0.85em;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .brand-bar .divider {
+            width: 30px;
+            height: 1px;
+            background: #475569;
+        }
+
+        .type-badges {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .type-badge.primary-badge {
+            background: rgba(168, 85, 247, 0.3);
+            color: #A855F7;
+            border: 1px solid #A855F7;
+        }
+
+        .type-badge.secondary-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10B981;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .type-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .badge-connector {
+            color: #475569;
+            font-size: 1.2em;
+        }
+
+        .hero h1 {
+            font-family: 'Georgia', serif;
+            font-size: 3em;
+            color: #fff;
+            margin-bottom: 10px;
+            line-height: 1.15;
+        }
+
+        .hero .tagline {
+            font-size: 1.15em;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .hero .summary {
+            font-size: 1.05em;
+            color: #94a3b8;
+            max-width: 550px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* FINGER VISUAL */
+        .finger-visual {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 6px;
+            margin: 35px auto 0;
+            max-width: 260px;
+        }
+
+        .finger {
+            border-radius: 40% 40% 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .finger.thumb   { width: 36px; height: 50px; background: rgba(244,63,94,0.2); }
+        .finger.pointer  { width: 32px; height: 70px; background: rgba(59,130,246,0.2); }
+        .finger.middle  { width: 32px; height: 80px; background: rgba(249,115,22,0.2); }
+        .finger.ring    { width: 32px; height: 72px; background: #10B981; }
+        .finger.pinky   { width: 28px; height: 55px; background: #A855F7; }
+
+        .finger.active-primary { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); }
+        .finger.active-secondary { box-shadow: 0 0 12px rgba(16, 185, 129, 0.15); }
+
+        .palm {
+            width: 170px;
+            height: 30px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            border-radius: 0 0 20px 20px;
+            margin: 0 auto;
+        }
+
+        /* MAIN CONTENT */
+        .content {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 50px 20px 60px;
+        }
+
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-label {
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #A855F7;
+            margin-bottom: 12px;
+        }
+
+        .section h2 {
+            font-family: 'Georgia', serif;
+            font-size: 1.6em;
+            color: #fff;
+            margin-bottom: 18px;
+            line-height: 1.3;
+        }
+
+        .section p {
+            color: #cbd5e1;
+            font-size: 0.98em;
+            line-height: 1.8;
+        }
+
+        /* DUAL TYPE CARDS */
+        .dual-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 45px;
+        }
+
+        .type-detail-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 28px;
+        }
+
+        .type-detail-card.primary-card {
+            border-left: 3px solid #A855F7;
+        }
+
+        .type-detail-card.secondary-card {
+            border-left: 3px solid #10B981;
+        }
+
+        .type-detail-card .card-label {
+            font-size: 0.7em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .type-detail-card.primary-card .card-label { color: #A855F7; }
+        .type-detail-card.secondary-card .card-label { color: #10B981; }
+
+        .type-detail-card h3 {
+            font-family: 'Georgia', serif;
+            font-size: 1.25em;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .type-detail-card .card-core {
+            font-size: 0.9em;
+            color: #94a3b8;
+            margin-bottom: 14px;
+        }
+
+        .type-detail-card p {
+            font-size: 0.9em;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+        /* STRENGTHS & WATCH-OUTS */
+        .traits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .trait-column h3 {
+            font-size: 0.95em;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trait-column.strengths h3 { color: #10B981; }
+        .trait-column.watch-outs h3 { color: #F59E0B; }
+
+        .trait-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.9em;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .trait-item .bullet {
+            flex-shrink: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-top: 8px;
+        }
+
+        .strengths .bullet { background: #10B981; }
+        .watch-outs .bullet { background: #F59E0B; }
+
+        /* HIGHLIGHT BOX */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(255,255,255,0.03));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .highlight-box h3 {
+            font-family: 'Georgia', serif;
+            font-size: 1.15em;
+            color: #A855F7;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box p {
+            color: #e2e8f0;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        /* GROWTH EDGE */
+        .growth-box {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .growth-box h3 {
+            font-family: 'Georgia', serif;
+            font-size: 1.15em;
+            color: #F59E0B;
+            margin-bottom: 12px;
+        }
+
+        .growth-box p {
+            color: #e2e8f0;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            background: linear-gradient(135deg, #1E3A5F, #162d4a);
+            border: 1px solid rgba(239, 93, 23, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .cta-section h2 {
+            font-family: 'Georgia', serif;
+            font-size: 1.5em;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .cta-section p {
+            color: #94a3b8;
+            font-size: 0.95em;
+            margin-bottom: 25px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ef5d17, #e5480d);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 93, 23, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(239, 93, 23, 0.15);
+            border: 1px solid #ef5d17;
+            color: #ef5d17;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(239, 93, 23, 0.25);
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            color: #475569;
+            font-size: 0.8em;
+        }
+
+        .footer a {
+            color: #ef5d17;
+            text-decoration: none;
+        }
+
+        /* PDF / WeasyPrint optimization */
+        @page {
+            size: letter;
+            margin: 0;
+        }
+
+        @media print {
+            body { background: #0a1929; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section { break-inside: avoid; }
+            .dual-cards { break-inside: avoid; }
+            .highlight-box { break-inside: avoid; }
+            .growth-box { break-inside: avoid; }
+            .cta-section { break-inside: avoid; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2em; }
+            .dual-cards { grid-template-columns: 1fr; }
+            .traits-grid { grid-template-columns: 1fr; }
+            .type-badges { flex-direction: column; gap: 8px; }
+            .content { padding: 30px 16px 40px; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-content">
+            <div class="brand-bar">
+                <span>Pentatype</span>
+                <div class="divider"></div>
+                <span>Russ Laggan</span>
+            </div>
+
+            <div class="type-badges">
+                <span class="type-badge primary-badge">
+                    <span class="dot" style="background: #A855F7;"></span>
+                    Pinky · Meaning
+                </span>
+                <span class="badge-connector">+</span>
+                <span class="type-badge secondary-badge">
+                    <span class="dot" style="background: #10B981;"></span>
+                    Ring · Discovery
+                </span>
+            </div>
+
+            <h1>The Deep Listener</h1>
+            <p class="tagline">Meaning meets Discovery</p>
+            <p class="summary">You combine philosophical depth with genuine curiosity, creating conversations that transform how clients think about home and life.</p>
+
+            <div class="finger-visual">
+                <div class="finger thumb "></div>
+                <div class="finger pointer "></div>
+                <div class="finger middle "></div>
+                <div class="finger ring active-secondary"></div>
+                <div class="finger pinky active-primary"></div>
+            </div>
+            <div class="palm"></div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="content">
+        <!-- PROFILE OVERVIEW -->
+        <div class="section">
+            <div class="section-label">Your Profile</div>
+            <h2>Who You Are as an Agent</h2>
+            <p>As an Advocate-Visionary hybrid, you bring together the deepest forms of both meaning-making and discovery. You don't just ask good questions—you ask questions that change how people think. And you don't just find meaning—you discover meaning that clients didn't know was there. This is the most introspective of all the subtypes.</p>
+        </div>
+
+        <!-- DUAL TYPE BREAKDOWN -->
+        <div class="dual-cards">
+            <div class="type-detail-card primary-card">
+                <div class="card-label">Primary Type</div>
+                <h3>The Advocate</h3>
+                <div class="card-core">Pinky · Meaning</div>
+                <p>In real estate, Meaning builds legacy. You're the agent clients call for life's biggest moves—not because you know the most comps, but because you understand what a home means in the context of a life.</p>
+            </div>
+            <div class="type-detail-card secondary-card">
+                <div class="card-label">Secondary Type</div>
+                <h3>The Visionary</h3>
+                <div class="card-core">Ring · Discovery</div>
+                <p>In real estate, Discovery is differentiation. While other agents show houses, you show possibilities. You ask the questions that make clients say, "I never thought about it that way."</p>
+            </div>
+        </div>
+
+        <!-- HOW YOU WORK -->
+        <div class="section">
+            <div class="section-label">Your Approach</div>
+            <h2>How You Work with Clients</h2>
+            <p>You approach every client relationship as an opportunity for mutual discovery and meaning-making. Your questions go beyond surface needs into territory that helps clients understand themselves better. A property search with you is a journey of self-discovery wrapped in a real estate transaction. Clients often say they learned more about themselves through working with you than through years of other experiences.</p>
+        </div>
+
+        <!-- STRENGTHS & WATCH-OUTS -->
+        <div class="section">
+            <div class="section-label">Your Edge</div>
+            <h2>Strengths & Watch-Outs</h2>
+            <div class="traits-grid">
+                <div class="trait-column strengths">
+                    <h3>Strengths</h3>
+                    <div class="trait-item"><span class="bullet"></span><span>Helping clients see real estate as part of their larger life vision</span></div>
+                    <div class="trait-item"><span class="bullet"></span><span>Providing counsel that considers long-term financial and personal impact</span></div>
+                    <div class="trait-item"><span class="bullet"></span><span>Building a reputation as a trusted advisor, not just a salesperson</span></div>
+                    <div class="trait-item"><span class="bullet"></span><span>Bringing philosophical depth to what most treat as a transaction</span></div>
+                </div>
+                <div class="trait-column watch-outs">
+                    <h3>Watch-Outs</h3>
+                    <div class="trait-item"><span class="bullet"></span><span>May come across as too abstract for practical-minded clients</span></div>
+                    <div class="trait-item"><span class="bullet"></span><span>Can overthink simple decisions in pursuit of deeper meaning</span></div>
+                    <div class="trait-item"><span class="bullet"></span><span>May struggle with high-volume transactional work</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- IDEAL CLIENT -->
+        <div class="section">
+            <div class="section-label">Best Fit</div>
+            <h2>Your Ideal Client</h2>
+            <p>Introspective, intentional people who approach major life decisions with depth and reflection. Writers, therapists, educators, and anyone who values inner growth alongside outer achievement.</p>
+        </div>
+
+        <!-- SUPERPOWER (highlight box) -->
+        <div class="section">
+            <div class="highlight-box">
+                <h3>Your Superpower</h3>
+                <p>Your initial client consultation is so transformative that clients share your contact not as a "great real estate agent" but as "someone you need to talk to before making any major life decision." The real estate transaction becomes the vehicle for something much larger.</p>
+            </div>
+        </div>
+
+        <!-- GROWTH EDGE -->
+        <div class="section">
+            <div class="growth-box">
+                <h3>Your Growth Edge</h3>
+                <p>Your depth of meaning and discovery can make you averse to the transactional aspects of real estate. The paperwork, the deadlines, the logistics—they all feel shallow compared to the conversations. Building systems that handle the mundane so you can focus on the meaningful is your edge.</p>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-section">
+            <h2>Ready to Leverage Your Type?</h2>
+            <p>Understanding your Pentatype is just the beginning. Work with Russ to build a communication strategy tailored to your unique blend.</p>
+            <div class="cta-buttons">
+                <a href="https://russlaggan.com" class="btn btn-primary">Visit RussLaggan.com</a>
+                <a href="pdf/advocate-visionary.pdf" download class="btn btn-secondary">Download Your Profile (PDF)</a>
+                <a href="../pentatype-assessment.html" class="btn btn-secondary">Retake Assessment</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>The Pentatype Assessment &middot; <a href="https://russlaggan.com">Russ Laggan</a> &amp; Spheramid System &middot; &copy; 2026</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pentatype Assessment - Discover Your Agent Communication Type</title>
+    <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1E3A5F 0%, #0f2a47 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(30, 58, 95, 0.95);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(239, 93, 23, 0.2);
+        }
+
+        /* LANDING SCREEN */
+        .landing-screen {
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .landing-screen h1 {
+            font-family: 'Georgia', serif;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .landing-screen .subtitle {
+            font-size: 1em;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .landing-screen .byline {
+            font-size: 0.9em;
+            color: #ef5d17;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .landing-screen .description {
+            background: rgba(239, 93, 23, 0.1);
+            border-left: 4px solid #ef5d17;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 35px;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ef5d17 0%, #e5480d 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.05em;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(239, 93, 23, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(239, 93, 23, 0.2);
+            border: 2px solid #ef5d17;
+            margin-top: 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(239, 93, 23, 0.3);
+        }
+
+        /* ASSESSMENT SCREEN */
+        .assessment-screen {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f43f5e, #3b82f6, #f97316, #10b981, #a855f7);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85em;
+            color: #cbd5e1;
+            text-align: right;
+        }
+
+        .question-container {
+            margin-bottom: 35px;
+        }
+
+        .question-number {
+            font-size: 0.85em;
+            color: #ef5d17;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-text {
+            font-family: 'Georgia', serif;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #fff;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            transform: scale(1.02);
+            animation: selectPulse 0.3s ease;
+        }
+
+        @keyframes selectPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1.02); }
+        }
+
+        .option[data-type="concierge"] {
+            border-left: 4px solid #F43F5E;
+        }
+
+        .option[data-type="concierge"]:hover {
+            background: rgba(244, 63, 94, 0.1);
+        }
+
+        .option[data-type="analyst"] {
+            border-left: 4px solid #3B82F6;
+        }
+
+        .option[data-type="analyst"]:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .option[data-type="strategist"] {
+            border-left: 4px solid #F97316;
+        }
+
+        .option[data-type="strategist"]:hover {
+            background: rgba(249, 115, 22, 0.1);
+        }
+
+        .option[data-type="visionary"] {
+            border-left: 4px solid #10B981;
+        }
+
+        .option[data-type="visionary"]:hover {
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .option[data-type="advocate"] {
+            border-left: 4px solid #A855F7;
+        }
+
+        .option[data-type="advocate"]:hover {
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        /* RESULTS SCREEN */
+        .results-screen {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .results-header h2 {
+            font-family: 'Georgia', serif;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .results-header p {
+            color: #cbd5e1;
+            font-size: 0.95em;
+        }
+
+        .type-card {
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid;
+        }
+
+        .type-card.primary {
+            background: rgba(239, 93, 23, 0.15);
+            border-left-color: #ef5d17;
+            border: 2px solid #ef5d17;
+            border-left-width: 6px;
+        }
+
+        .type-card.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border-left-color: #cbd5e1;
+        }
+
+        .type-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .type-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .type-card.primary .type-icon {
+            background: #ef5d17;
+        }
+
+        .type-info h3 {
+            font-size: 1.4em;
+            margin-bottom: 3px;
+            color: #fff;
+        }
+
+        .type-info .finger-name {
+            font-size: 0.85em;
+            color: #ef5d17;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .type-description {
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin-top: 12px;
+        }
+
+        .score-breakdown {
+            margin-top: 35px;
+            padding-top: 35px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .score-breakdown h3 {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .score-item {
+            margin-bottom: 18px;
+        }
+
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            transition: width 0.4s ease;
+            border-radius: 10px;
+        }
+
+        .score-item[data-type="concierge"] .score-bar-fill { background: #F43F5E; }
+        .score-item[data-type="analyst"] .score-bar-fill { background: #3B82F6; }
+        .score-item[data-type="strategist"] .score-bar-fill { background: #F97316; }
+        .score-item[data-type="visionary"] .score-bar-fill { background: #10B981; }
+        .score-item[data-type="advocate"] .score-bar-fill { background: #A855F7; }
+
+        .subtype-info {
+            background: rgba(239, 93, 23, 0.1);
+            border-left: 4px solid #ef5d17;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .subtype-info h4 {
+            color: #ef5d17;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtype-info p {
+            color: #e2e8f0;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .email-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(239, 93, 23, 0.3);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .email-section h4 {
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .email-section p {
+            font-size: 0.9em;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .email-input-group input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .email-input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .email-input-group button {
+            padding: 12px 20px;
+        }
+
+        .results-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .results-actions .btn {
+            width: 100%;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #ef5d17;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+
+        .back-link a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10B981;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #a7f3d0;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 640px) {
+            .container {
+                padding: 25px;
+            }
+
+            .landing-screen h1 {
+                font-size: 1.8em;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .option {
+                padding: 14px;
+                font-size: 0.9em;
+            }
+
+            .type-card {
+                padding: 20px;
+            }
+
+            .type-info h3 {
+                font-size: 1.2em;
+            }
+
+            .results-actions {
+                gap: 12px;
+            }
+
+            .email-input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- LANDING SCREEN -->
+        <div id="landingScreen" class="landing-screen">
+            <h1>Discover Your Agent Communication Type</h1>
+            <p class="byline">The Pentatype Assessment</p>
+            <p class="subtitle">by Russ Laggan & Spheramid System</p>
+            <div class="description">
+                <p>Your natural communication style shapes how you build client relationships, deliver value, and close deals. This 40-question assessment reveals your primary and secondary Pentatype—the five archetypal communication patterns that drive real estate excellence.</p>
+                <p style="margin-top: 12px;">There are no right or wrong answers. Choose the option that resonates most with your natural instincts.</p>
+            </div>
+            <button class="btn" onclick="startAssessment()">Start Assessment</button>
+        </div>
+
+        <!-- ASSESSMENT SCREEN -->
+        <div id="assessmentScreen" class="assessment-screen hidden">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progressText">0 / 40</span>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div class="question-number" id="questionNumber">Question 1</div>
+                <div class="question-text" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div id="resultsScreen" class="results-screen hidden">
+            <div class="results-header">
+                <h2>Your Pentatype Results</h2>
+                <p>Here's what your communication style reveals</p>
+            </div>
+
+            <div id="primaryTypeCard" class="type-card primary"></div>
+            <div id="secondaryTypeCard" class="type-card secondary"></div>
+
+            <div class="score-breakdown">
+                <h3>Score Breakdown</h3>
+                <div id="scoreBreakdown"></div>
+            </div>
+
+            <div id="subtypeInfo" class="subtype-info hidden">
+                <h4>Your Sub-Type</h4>
+                <p id="subtypeText"></p>
+            </div>
+
+            <div class="email-section">
+                <h4>Want Your Full Profile?</h4>
+                <p>Enter your email for a detailed Pentatype breakdown including sub-type analysis and personalized coaching insights from Russ.</p>
+                <div id="successMessage" class="success-message hidden">Email saved! Check your inbox for your detailed report.</div>
+                <div class="email-input-group">
+                    <input type="email" id="emailInput" placeholder="your@email.com">
+                    <button class="btn" onclick="submitEmail()">Send Report</button>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button class="btn btn-secondary" onclick="restartAssessment()">Take Assessment Again</button>
+            </div>
+
+            <div class="back-link">
+                <p style="color: #cbd5e1; font-size: 0.9em; margin-bottom: 10px;">Learn more at</p>
+                <a href="https://russlaggan.com" target="_blank">russlaggan.com →</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TYPE DEFINITIONS
+        const types = {
+            concierge: {
+                name: 'The Concierge',
+                finger: 'Thumb',
+                color: '#F43F5E',
+                letter: 'C',
+                core: 'Connection',
+                description: 'You build client loyalty through warmth, genuine connection, and making people feel seen. Your vulnerability and charisma create safe spaces where clients trust you completely.'
+            },
+            analyst: {
+                name: 'The Analyst',
+                finger: 'Pointer',
+                color: '#3B82F6',
+                letter: 'A',
+                core: 'Structure',
+                description: 'You use frameworks, data, and rigorous systems to serve clients. Your deep preparation and data-driven approach builds credibility and confidence in your guidance.'
+            },
+            strategist: {
+                name: 'The Strategist',
+                finger: 'Middle',
+                color: '#F97316',
+                letter: 'S',
+                core: 'Conviction',
+                description: 'You speak your mind clearly and challenge the status quo. Your willingness to debate, high conviction, and contrarian positions create polarity and drive action.'
+            },
+            visionary: {
+                name: 'The Visionary',
+                finger: 'Ring',
+                color: '#10B981',
+                letter: 'V',
+                core: 'Discovery',
+                description: 'You ask probing questions and discover client needs at a deep level. Your thoughtful follow-ups, focus on narrative, and authentic connections reveal what clients truly want.'
+            },
+            advocate: {
+                name: 'The Advocate',
+                finger: 'Pinky',
+                color: '#A855F7',
+                letter: 'X',
+                core: 'Meaning',
+                description: 'You represent long-term interests and provide wisdom grounded in first principles. Your abstract thinking and focus on underlying meaning guide clients toward their best future.'
+            }
+        };
+
+        // STATE
+        let currentQuestion = 0;
+        let scores = {
+            concierge: 0,
+            analyst: 0,
+            strategist: 0,
+            visionary: 0,
+            advocate: 0
+        };
+        let answeredQuestions = [];
+
+        // QUESTIONS - 40 total, 8 per type
+        const questions = [
+            // Q1 - Concierge primary
+            {
+                text: "A client calls you frustrated about their home inspection results. What's your first instinct?",
+                options: [
+                    { text: "Ask them to share their feelings and let them know you're here for them every step", type: "concierge" },
+                    { text: "Walk them through the inspection report systematically and explain what each finding means", type: "analyst" },
+                    { text: "Give them your honest take on which issues are deal-breakers and which they can push back on", type: "strategist" },
+                    { text: "Ask follow-up questions to understand what matters most to them about the home", type: "visionary" },
+                    { text: "Discuss the long-term implications and help them see the bigger picture of their investment", type: "advocate" }
+                ]
+            },
+            // Q2 - Analyst primary
+            {
+                text: "When preparing a listing presentation, you feel most confident when you have:",
+                options: [
+                    { text: "Built genuine rapport and can speak authentically about why you love this community", type: "concierge" },
+                    { text: "Comprehensive market data, comparable sales, and a detailed pricing analysis", type: "analyst" },
+                    { text: "A clear argument for why your approach gets better results than other agents", type: "strategist" },
+                    { text: "Deep knowledge of the neighborhood's story and unique character", type: "visionary" },
+                    { text: "An understanding of their long-term goals and how this home fits into their life vision", type: "advocate" }
+                ]
+            },
+            // Q3 - Strategist primary
+            {
+                text: "You disagree with a client's asking price—they want much higher than the market supports. Your move:",
+                options: [
+                    { text: "Gently walk them through comps and market realities with empathy for their expectations", type: "concierge" },
+                    { text: "Present detailed data showing absorption rates, price reduction patterns, and days on market", type: "analyst" },
+                    { text: "Tell them directly that overpricing will kill interest and they need to be realistic or find another agent", type: "strategist" },
+                    { text: "Explore what the number means to them—are they funding retirement? Starting a business?", type: "visionary" },
+                    { text: "Discuss the principles of smart pricing and how this fits into their broader financial strategy", type: "advocate" }
+                ]
+            },
+            // Q4 - Visionary primary
+            {
+                text: "An open house attendee seems interested but quiet. What do you do?",
+                options: [
+                    { text: "Share stories about the neighborhood and the home's history to build connection", type: "concierge" },
+                    { text: "Provide detailed specs, square footage, lot size, and market positioning", type: "analyst" },
+                    { text: "Ask them directly what they're looking for and what matters most in a home", type: "visionary" },
+                    { text: "Confidently present your unique value and why working with you gets results", type: "strategist" },
+                    { text: "Help them understand how this home aligns with their life values and long-term plans", type: "advocate" }
+                ]
+            },
+            // Q5 - Advocate primary
+            {
+                text: "When you advise a client to pass on a seemingly perfect property, it's usually because:",
+                options: [
+                    { text: "You sense they're not truly excited and you want them to feel great about their choice", type: "concierge" },
+                    { text: "The numbers don't align with their stated investment criteria", type: "analyst" },
+                    { text: "You've identified red flags others missed and you're being honest about the risks", type: "strategist" },
+                    { text: "Something in their answers tells you this home isn't actually what they want", type: "visionary" },
+                    { text: "It doesn't align with their true values or long-term life goals and vision", type: "advocate" }
+                ]
+            },
+            // Q6 - Concierge primary
+            {
+                text: "Your best client refers their friend to you. The first thing you do:",
+                options: [
+                    { text: "Thank your client warmly and make the referral feel personally important", type: "concierge" },
+                    { text: "Send a systematic welcome package with all your services and market information", type: "analyst" },
+                    { text: "Schedule a meeting to clearly explain your approach and why you're the best choice", type: "strategist" },
+                    { text: "Ask questions to understand their situation, dreams, and what brought them to you", type: "visionary" },
+                    { text: "Discuss your philosophy on real estate and help them see you as a trusted advisor", type: "advocate" }
+                ]
+            },
+            // Q7 - Analyst primary
+            {
+                text: "You're closing on a deal. The client asks if there are any hidden issues they should worry about. How do you respond?",
+                options: [
+                    { text: "Reassure them warmly and let them know they can trust your judgment completely", type: "concierge" },
+                    { text: "Review the inspection report, appraisal, title, and any contingencies in detail", type: "analyst" },
+                    { text: "Tell them honestly if you think they should have any concerns and why", type: "strategist" },
+                    { text: "Ask them what their biggest worries are so you can address what matters to them", type: "visionary" },
+                    { text: "Explain how all the due diligence protects them and fits into their larger financial picture", type: "advocate" }
+                ]
+            },
+            // Q8 - Strategist primary
+            {
+                text: "At a networking event, a veteran agent questions your marketing approach. You:",
+                options: [
+                    { text: "Listen warmly and find common ground about what really matters in this business", type: "concierge" },
+                    { text: "Explain the metrics and data that prove your approach is effective", type: "analyst" },
+                    { text: "Challenge their assumptions and make a case for why your way gets better results", type: "strategist" },
+                    { text: "Ask curious questions about their approach and explore what works in their market", type: "visionary" },
+                    { text: "Discuss the principles behind modern marketing and where the industry is heading", type: "advocate" }
+                ]
+            },
+            // Q9 - Visionary primary
+            {
+                text: "During a buyer consultation, you realize the property they showed you isn't actually what they want. You:",
+                options: [
+                    { text: "Make them feel safe sharing their true feelings without judgment", type: "concierge" },
+                    { text: "Analyze what's missing from the property against their checklist", type: "analyst" },
+                    { text: "Give them direct feedback on what won't work and what they should focus on instead", type: "strategist" },
+                    { text: "Ask discovery questions until they articulate what they really need and want", type: "visionary" },
+                    { text: "Help them understand their deeper values and what truly matters in a home", type: "advocate" }
+                ]
+            },
+            // Q10 - Advocate primary
+            {
+                text: "A client wants to sell to cash investors for a quick close, even though they'd lose money. You:",
+                options: [
+                    { text: "Express genuine concern and offer to explore other options together", type: "concierge" },
+                    { text: "Show them the financial analysis comparing cash offers to traditional sale scenarios", type: "analyst" },
+                    { text: "Tell them directly that this decision would be a mistake and push back hard", type: "strategist" },
+                    { text: "Understand their timeline pressures and explore what's really driving this choice", type: "visionary" },
+                    { text: "Help them see the long-term financial and life implications of selling too quickly", type: "advocate" }
+                ]
+            },
+            // Q11 - Concierge primary
+            {
+                text: "How do you handle a client who's upset about a negative inspection report?",
+                options: [
+                    { text: "Create a safe space for their emotions and be their rock through the process", type: "concierge" },
+                    { text: "Provide a detailed analysis of repair costs and timeline to remediation", type: "analyst" },
+                    { text: "Give them your honest opinion on negotiation leverage and next steps", type: "strategist" },
+                    { text: "Listen to understand what aspects worry them most", type: "visionary" },
+                    { text: "Help them see how to use this as a learning opportunity for their next purchase", type: "advocate" }
+                ]
+            },
+            // Q12 - Analyst primary
+            {
+                text: "You're training a new agent on your systems. What do you emphasize most?",
+                options: [
+                    { text: "The importance of building genuine relationships and making clients feel valued", type: "concierge" },
+                    { text: "The documented processes, checklists, and data systems that drive consistent results", type: "analyst" },
+                    { text: "Your competitive advantages and why your approach outperforms the market", type: "strategist" },
+                    { text: "How to ask better questions and uncover what clients really want", type: "visionary" },
+                    { text: "The principles and philosophy behind real estate success", type: "advocate" }
+                ]
+            },
+            // Q13 - Strategist primary
+            {
+                text: "Two competitive offers come in on your listing. They're similar prices but different terms. Your instinct is to:",
+                options: [
+                    { text: "Present both warmly and let the seller feel empowered in their decision", type: "concierge" },
+                    { text: "Analyze each offer's true value, risk, and timeline to closing", type: "analyst" },
+                    { text: "Recommend the offer that positions your seller best and explain why that's the right play", type: "strategist" },
+                    { text: "Ask the seller what matters most to them and help them articulate their priorities", type: "visionary" },
+                    { text: "Discuss the broader implications of each choice for their long-term situation", type: "advocate" }
+                ]
+            },
+            // Q14 - Visionary primary
+            {
+                text: "A seller is vague about their motivation for selling. What do you do?",
+                options: [
+                    { text: "Create a relaxed conversation where they feel comfortable opening up", type: "concierge" },
+                    { text: "Ask systematic questions about their timeline, price, and contingencies", type: "analyst" },
+                    { text: "Press them to be direct—vagueness creates problems later", type: "strategist" },
+                    { text: "Ask thoughtful follow-up questions to surface what's really driving the sale", type: "visionary" },
+                    { text: "Help them think through the deeper reasons and what matters about this transition", type: "advocate" }
+                ]
+            },
+            // Q15 - Advocate primary
+            {
+                text: "When mentoring another agent, what advice surfaces most naturally?",
+                options: [
+                    { text: "Focus on being likeable and making clients feel cared for", type: "concierge" },
+                    { text: "Master the systems and data—that's where real expertise lives", type: "analyst" },
+                    { text: "Build a personal brand and reputation as someone who gets results", type: "strategist" },
+                    { text: "Learn to listen deeply and ask the right questions", type: "visionary" },
+                    { text: "Understand the principles behind real estate and think like a true advisor", type: "advocate" }
+                ]
+            },
+            // Q16 - Concierge primary
+            {
+                text: "After a closing, you most enjoy:",
+                options: [
+                    { text: "Celebrating the milestone with genuine warmth and expressing how much it meant to you", type: "concierge" },
+                    { text: "Reviewing the transaction results and analyzing what went well", type: "analyst" },
+                    { text: "Knowing you executed flawlessly and delivered exceptional results", type: "strategist" },
+                    { text: "Understanding how the home change will impact their life going forward", type: "visionary" },
+                    { text: "Reflecting on the journey and the wisdom gained through the process", type: "advocate" }
+                ]
+            },
+            // Q17 - Analyst primary
+            {
+                text: "A client gets emotional during negotiations. You:",
+                options: [
+                    { text: "Sit with them, validate their feelings, and offer reassurance", type: "concierge" },
+                    { text: "Step back, let them collect themselves, and focus on the facts when ready", type: "analyst" },
+                    { text: "Tell them directly that emotions cloud judgment and you need to stay strategic", type: "strategist" },
+                    { text: "Explore what's underneath the emotion—what are they really afraid of?", type: "visionary" },
+                    { text: "Help them see this situation as part of a larger life transition", type: "advocate" }
+                ]
+            },
+            // Q18 - Strategist primary
+            {
+                text: "A competitor gets a significant listing you wanted. Your reaction is to:",
+                options: [
+                    { text: "Reach out warmly and ask what made the seller choose them", type: "concierge" },
+                    { text: "Analyze what you could have done differently with better market positioning", type: "analyst" },
+                    { text: "Identify where they're weak and make a move to win the next similar listing", type: "strategist" },
+                    { text: "Get curious about their presentation approach and strategy", type: "visionary" },
+                    { text: "Step back and reflect on how to strengthen your overall market approach", type: "advocate" }
+                ]
+            },
+            // Q19 - Visionary primary
+            {
+                text: "When you're stuck with a client decision, you typically:",
+                options: [
+                    { text: "Call and have an empathetic conversation to guide them", type: "concierge" },
+                    { text: "Send a detailed email with all relevant data and comparisons", type: "analyst" },
+                    { text: "Give them your recommendation and why it's the right move", type: "strategist" },
+                    { text: "Ask probing questions that help them see the situation more clearly", type: "visionary" },
+                    { text: "Have a deeper conversation about what truly matters to them", type: "advocate" }
+                ]
+            },
+            // Q20 - Advocate primary
+            {
+                text: "You advise a young buyer to pass on an investment property opportunity. Your reasoning centers on:",
+                options: [
+                    { text: "Wanting to protect them from a decision they might regret", type: "concierge" },
+                    { text: "The cash flow projections and financial metrics don't support the purchase", type: "analyst" },
+                    { text: "Your experience tells you this market is heading the wrong direction", type: "strategist" },
+                    { text: "Sensing their hesitation and wanting to give them permission to trust themselves", type: "visionary" },
+                    { text: "How this decision shapes their financial foundation and future wealth building", type: "advocate" }
+                ]
+            },
+            // Q21 - Concierge primary
+            {
+                text: "Your signature strength in client relationships is:",
+                options: [
+                    { text: "Making people feel genuinely seen, valued, and cared for", type: "concierge" },
+                    { text: "Providing thorough, reliable information and systematic guidance", type: "analyst" },
+                    { text: "Delivering straight talk and clear strategic direction", type: "strategist" },
+                    { text: "Understanding what clients really need beneath what they say", type: "visionary" },
+                    { text: "Helping them make choices aligned with their deepest values and vision", type: "advocate" }
+                ]
+            },
+            // Q22 - Analyst primary
+            {
+                text: "When you lose a deal, you most want to understand:",
+                options: [
+                    { text: "What you could have said or done differently to connect better", type: "concierge" },
+                    { text: "The specific objections or concerns that caused them to choose another agent", type: "analyst" },
+                    { text: "Where your positioning was weak and how to prevent it next time", type: "strategist" },
+                    { text: "What story or narrative won them over to the other agent", type: "visionary" },
+                    { text: "What they're truly seeking and whether you were the right fit anyway", type: "advocate" }
+                ]
+            },
+            // Q23 - Strategist primary
+            {
+                text: "Your personal brand as an agent emphasizes:",
+                options: [
+                    { text: "Being the warm, trusted friend who makes this process enjoyable", type: "concierge" },
+                    { text: "The professional expertise and meticulous attention to detail", type: "analyst" },
+                    { text: "Delivering results and dominating your market category", type: "strategist" },
+                    { text: "Deep listening and truly understanding what clients want", type: "visionary" },
+                    { text: "Wise counsel and helping clients make choices that serve their future", type: "advocate" }
+                ]
+            },
+            // Q24 - Visionary primary
+            {
+                text: "In team meetings, you most often raise points about:",
+                options: [
+                    { text: "How we can make our clients feel more appreciated and valued", type: "concierge" },
+                    { text: "Our systems, processes, and metrics for consistent execution", type: "analyst" },
+                    { text: "How we can outperform competitors and win more market share", type: "strategist" },
+                    { text: "What clients are really telling us about their needs and priorities", type: "visionary" },
+                    { text: "Our values as a team and the kind of business we want to build", type: "advocate" }
+                ]
+            },
+            // Q25 - Advocate primary
+            {
+                text: "When coaching a struggling agent, your approach centers on:",
+                options: [
+                    { text: "Building their confidence and making them feel supported and capable", type: "concierge" },
+                    { text: "Breaking down the systems and processes they need to master", type: "analyst" },
+                    { text: "Pushing them to be more aggressive and competitive in the market", type: "strategist" },
+                    { text: "Helping them understand what their clients really want from them", type: "visionary" },
+                    { text: "Helping them see the bigger picture and principles of real estate success", type: "advocate" }
+                ]
+            },
+            // Q26 - Concierge primary
+            {
+                text: "Your worst nightmare as an agent would be:",
+                options: [
+                    { text: "A client feeling hurt, unsupported, or not valued by you", type: "concierge" },
+                    { text: "Making a mistake or providing inaccurate information", type: "analyst" },
+                    { text: "Losing to a competitor or being perceived as weak in the market", type: "strategist" },
+                    { text: "Missing what a client really wanted and guiding them wrong", type: "visionary" },
+                    { text: "Helping someone make a choice that didn't serve their true interests", type: "advocate" }
+                ]
+            },
+            // Q27 - Analyst primary
+            {
+                text: "When you notice inconsistencies in what a client is saying, you:",
+                options: [
+                    { text: "Gently explore the contradiction with curiosity and care", type: "concierge" },
+                    { text: "Document the specifics and clarify exactly what they need", type: "analyst" },
+                    { text: "Point it out directly and ask them to be clear about their priorities", type: "strategist" },
+                    { text: "Ask questions to understand what's really going on beneath the surface", type: "visionary" },
+                    { text: "Discuss the bigger picture to help them see what matters most", type: "advocate" }
+                ]
+            },
+            // Q28 - Strategist primary
+            {
+                text: "You feel most energized by work when you're:",
+                options: [
+                    { text: "Building deep connections and making clients feel genuinely cared for", type: "concierge" },
+                    { text: "Executing a complex transaction flawlessly with attention to every detail", type: "analyst" },
+                    { text: "Winning a tough negotiation or landing a competitive listing", type: "strategist" },
+                    { text: "Uncovering what clients truly want and helping them see it clearly", type: "visionary" },
+                    { text: "Helping someone make a choice that aligns with their deepest values", type: "advocate" }
+                ]
+            },
+            // Q29 - Visionary primary
+            {
+                text: "When creating a market analysis for a seller, you lead with:",
+                options: [
+                    { text: "Stories and insights about the neighborhood and community", type: "concierge" },
+                    { text: "Detailed comparable sales data and statistical analysis", type: "analyst" },
+                    { text: "Your clear recommendation and the reasons why it's the right strategy", type: "strategist" },
+                    { text: "Questions about their goals to frame the analysis around what matters to them", type: "visionary" },
+                    { text: "Principles of the market and how their property fits into larger trends", type: "advocate" }
+                ]
+            },
+            // Q30 - Advocate primary
+            {
+                text: "You tend to say no to opportunities because:",
+                options: [
+                    { text: "You're overcommitted to the clients you're already serving", type: "concierge" },
+                    { text: "The time investment isn't justified by the return or it's outside your system", type: "analyst" },
+                    { text: "They don't align with your market focus or competitive positioning", type: "strategist" },
+                    { text: "Something about the fit doesn't feel right intuitively", type: "visionary" },
+                    { text: "They're not aligned with your values or long-term vision for your business", type: "advocate" }
+                ]
+            },
+            // Q31 - Concierge primary
+            {
+                text: "A listing expires without selling. Your primary concern is:",
+                options: [
+                    { text: "The seller feels disappointed and unsupported by you", type: "concierge" },
+                    { text: "What went wrong with your pricing strategy or marketing execution", type: "analyst" },
+                    { text: "How this affects your market reputation and competitive position", type: "strategist" },
+                    { text: "Whether you understood the property's actual market appeal", type: "visionary" },
+                    { text: "Whether the seller made the right decision about their timeline and price", type: "advocate" }
+                ]
+            },
+            // Q32 - Analyst primary
+            {
+                text: "Your response to rapid market changes is to:",
+                options: [
+                    { text: "Help clients feel calm and reassured through the uncertainty", type: "concierge" },
+                    { text: "Analyze the data, update your models, and adjust your strategies accordingly", type: "analyst" },
+                    { text: "Take aggressive action to position yourself ahead of other agents", type: "strategist" },
+                    { text: "Listen closely to what clients are hearing and fearing", type: "visionary" },
+                    { text: "Explore the deeper implications and what's really shifting in the market", type: "advocate" }
+                ]
+            },
+            // Q33 - Strategist primary
+            {
+                text: "When you hear that another agent got a big deal, your instinct is to:",
+                options: [
+                    { text: "Congratulate them warmly and learn from their success", type: "concierge" },
+                    { text: "Analyze what they did and understand the specifics of their offer", type: "analyst" },
+                    { text: "Acknowledge it and double down on winning more of those deals yourself", type: "strategist" },
+                    { text: "Wonder what their approach was and what clients responded to", type: "visionary" },
+                    { text: "Reflect on whether that type of business aligns with your long-term approach", type: "advocate" }
+                ]
+            },
+            // Q34 - Visionary primary
+            {
+                text: "In property showings, you spend the most time:",
+                options: [
+                    { text: "Making buyers feel welcomed and sharing the home's warm character", type: "concierge" },
+                    { text: "Providing specs, upgrades, square footage, and technical information", type: "analyst" },
+                    { text: "Highlighting competitive advantages and why this home stands out", type: "strategist" },
+                    { text: "Asking questions about what they're looking for and why certain features matter", type: "visionary" },
+                    { text: "Discussing how the home supports their life vision and long-term happiness", type: "advocate" }
+                ]
+            },
+            // Q35 - Advocate primary
+            {
+                text: "You reject a potential client because:",
+                options: [
+                    { text: "You sense you wouldn't click personally or build good rapport", type: "concierge" },
+                    { text: "Their situation is too complex or outside your documented processes", type: "analyst" },
+                    { text: "They're not serious or won't respect your positioning and recommendations", type: "strategist" },
+                    { text: "Something about their priorities or communication style seems misaligned", type: "visionary" },
+                    { text: "They're asking you to do something that conflicts with your values or principles", type: "advocate" }
+                ]
+            },
+            // Q36 - Concierge primary
+            {
+                text: "Your social media presence emphasizes:",
+                options: [
+                    { text: "Behind-the-scenes moments and your genuine personality", type: "concierge" },
+                    { text: "Market data, real estate tips, and professional insights", type: "analyst" },
+                    { text: "Your results, awards, and competitive achievements", type: "strategist" },
+                    { text: "Stories about homes and neighborhoods, and curious observations", type: "visionary" },
+                    { text: "Principles of real estate, advice about life decisions, and meaningful content", type: "advocate" }
+                ]
+            },
+            // Q37 - Analyst primary
+            {
+                text: "You feel a deal slipping away. Your response is to:",
+                options: [
+                    { text: "Reach out with personal warmth and see if you can salvage the relationship", type: "concierge" },
+                    { text: "Review every detail of your communication and offer to address any concerns", type: "analyst" },
+                    { text: "Make a stronger case for why your offer or approach is superior", type: "strategist" },
+                    { text: "Ask what would make a difference and explore what matters most to them", type: "visionary" },
+                    { text: "Have a conversation about whether you're truly the right fit for them", type: "advocate" }
+                ]
+            },
+            // Q38 - Strategist primary
+            {
+                text: "In a tough negotiation, you're most likely to:",
+                options: [
+                    { text: "Use warmth and relationship to find collaborative solutions", type: "concierge" },
+                    { text: "Present data and documentation that supports your position", type: "analyst" },
+                    { text: "Make a clear, compelling argument and push for your client's advantage", type: "strategist" },
+                    { text: "Explore what each side really needs and find creative win-win angles", type: "visionary" },
+                    { text: "Discuss principles and long-term thinking to elevate the conversation", type: "advocate" }
+                ]
+            },
+            // Q39 - Visionary primary
+            {
+                text: "When interviewing a new agent to join your team, you're most interested in their:",
+                options: [
+                    { text: "Warmth, likability, and how well they connect with people", type: "concierge" },
+                    { text: "Systems, process knowledge, and attention to detail", type: "analyst" },
+                    { text: "Ambition, competitiveness, and drive to win", type: "strategist" },
+                    { text: "Curiosity, listening skills, and emotional intelligence", type: "visionary" },
+                    { text: "Values, integrity, and alignment with your business philosophy", type: "advocate" }
+                ]
+            },
+            // Q40 - Advocate primary
+            {
+                text: "When reflecting on your career, you're most proud of:",
+                options: [
+                    { text: "The relationships you've built and how much you've meant to clients", type: "concierge" },
+                    { text: "The flawless transactions you've executed and your professional reputation", type: "analyst" },
+                    { text: "Your market dominance and results compared to other agents", type: "strategist" },
+                    { text: "How well you understood what clients wanted and guided them to it", type: "visionary" },
+                    { text: "Helping people make life decisions that truly served their long-term interests", type: "advocate" }
+                ]
+            }
+        ];
+
+        // SHUFFLE QUESTIONS
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        let shuffledQuestions = shuffleArray(questions);
+
+        // START ASSESSMENT
+        function startAssessment() {
+            document.getElementById('landingScreen').classList.add('hidden');
+            document.getElementById('assessmentScreen').classList.remove('hidden');
+            showQuestion(0);
+        }
+
+        // SHOW QUESTION
+        function showQuestion(index) {
+            currentQuestion = index;
+            const q = shuffledQuestions[index];
+
+            document.getElementById('questionNumber').textContent = `Question ${index + 1}`;
+            document.getElementById('questionText').textContent = q.text;
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            // Shuffle options but keep their types
+            const shuffledOptions = shuffleArray(q.options);
+
+            shuffledOptions.forEach((option, idx) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'option';
+                optionEl.setAttribute('data-type', option.type);
+                optionEl.textContent = option.text;
+                optionEl.onclick = () => selectOption(option.type, optionEl);
+                container.appendChild(optionEl);
+            });
+
+            // Update progress
+            const progress = ((index + 1) / shuffledQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `${index + 1} / ${shuffledQuestions.length}`;
+        }
+
+        // SELECT OPTION
+        function selectOption(type, element) {
+            element.classList.add('selected');
+            scores[type]++;
+            answeredQuestions.push(type);
+
+            setTimeout(() => {
+                if (currentQuestion < shuffledQuestions.length - 1) {
+                    showQuestion(currentQuestion + 1);
+                } else {
+                    showResults();
+                }
+            }, 300);
+        }
+
+        // SHOW RESULTS
+        function showResults() {
+            document.getElementById('assessmentScreen').classList.add('hidden');
+            document.getElementById('resultsScreen').classList.remove('hidden');
+
+            // Find primary and secondary types
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const primaryType = sorted[0][0];
+            const secondaryType = sorted[1][0];
+            const primaryScore = sorted[0][1];
+            const secondaryScore = sorted[1][1];
+
+            // Render type cards
+            renderTypeCard(primaryType, true);
+            renderTypeCard(secondaryType, false);
+
+            // Render score breakdown
+            renderScoreBreakdown();
+
+            // Always show subtype - everyone has a primary + secondary blend
+            renderSubtype(primaryType, secondaryType);
+        }
+
+        function renderTypeCard(typeKey, isPrimary) {
+            const type = types[typeKey];
+            const card = document.getElementById(isPrimary ? 'primaryTypeCard' : 'secondaryTypeCard');
+
+            card.innerHTML = `
+                <div class="type-card-header">
+                    <div class="type-icon" style="background-color: ${type.color};">${type.letter}</div>
+                    <div class="type-info">
+                        <div class="finger-name">${isPrimary ? 'Your Primary Type' : 'Your Secondary Type'}</div>
+                        <h3>${type.name}</h3>
+                    </div>
+                </div>
+                <div class="type-description">
+                    <p><strong>${type.finger} • ${type.core}</strong></p>
+                    <p style="margin-top: 12px;">${type.description}</p>
+                </div>
+            `;
+        }
+
+        function renderScoreBreakdown() {
+            const maxScore = Math.max(...Object.values(scores));
+            const container = document.getElementById('scoreBreakdown');
+            container.innerHTML = '';
+
+            Object.entries(scores).forEach(([typeKey, score]) => {
+                const type = types[typeKey];
+                const percentage = Math.round((score / 40) * 100);
+
+                const item = document.createElement('div');
+                item.className = 'score-item';
+                item.setAttribute('data-type', typeKey);
+                item.innerHTML = `
+                    <div class="score-label">
+                        <span>${type.name}</span>
+                        <span>${score}/8</span>
+                    </div>
+                    <div class="score-bar">
+                        <div class="score-bar-fill" style="width: ${percentage}%"></div>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderSubtype(primary, secondary) {
+            const primaryType = types[primary];
+            const secondaryType = types[secondary];
+
+            const subtypeNames = {
+                'concierge-analyst': 'The Trusted Guide',
+                'concierge-strategist': 'The Empathetic Closer',
+                'concierge-visionary': 'The Connector',
+                'concierge-advocate': 'The Heart',
+                'analyst-concierge': 'The Precision Guide',
+                'analyst-strategist': 'The Precision Player',
+                'analyst-visionary': 'The Thoughtful Expert',
+                'analyst-advocate': 'The Wise Architect',
+                'strategist-concierge': 'The Velvet Hammer',
+                'strategist-analyst': 'The War Room General',
+                'strategist-visionary': 'The Disruptive Innovator',
+                'strategist-advocate': 'The Principled Leader',
+                'visionary-concierge': 'The Empathic Explorer',
+                'visionary-analyst': 'The Research Storyteller',
+                'visionary-strategist': 'The Bold Explorer',
+                'visionary-advocate': 'The Storyteller',
+                'advocate-concierge': 'The Sage Friend',
+                'advocate-analyst': "The Philosopher's Calculator",
+                'advocate-strategist': 'The Moral Disruptor',
+                'advocate-visionary': 'The Deep Listener'
+            };
+
+            const subtypeKey = `${primary}-${secondary}`;
+            const subtypeName = subtypeNames[subtypeKey] || `The ${primaryType.name} with ${secondaryType.core}`;
+
+            document.getElementById('subtypeInfo').classList.remove('hidden');
+            document.getElementById('subtypeText').innerHTML = `
+                <strong>${subtypeName}</strong> is your hybrid profile. You blend ${primaryType.name}'s ${primaryType.core} with ${secondaryType.name}'s ${secondaryType.core}, creating a unique approach that balances both strengths.
+            `;
+
+            // Add "View Full Profile" button
+            const profileBtn = document.createElement('div');
+            profileBtn.style.textAlign = 'center';
+            profileBtn.style.marginTop = '20px';
+            profileBtn.innerHTML = `<a href="types/${subtypeKey}.html" class="btn" style="display: inline-block; text-decoration: none;">View Your Full ${subtypeName} Profile →</a>`;
+            document.getElementById('subtypeInfo').appendChild(profileBtn);
+        }
+
+        function submitEmail() {
+            const email = document.getElementById('emailInput').value;
+            if (email) {
+                localStorage.setItem('pentatype-email', email);
+                document.getElementById('emailInput').value = '';
+                document.getElementById('successMessage').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('successMessage').classList.add('hidden');
+                }, 3000);
+            }
+        }
+
+        function restartAssessment() {
+            currentQuestion = 0;
+            scores = {
+                concierge: 0,
+                analyst: 0,
+                strategist: 0,
+                visionary: 0,
+                advocate: 0
+            };
+            answeredQuestions = [];
+            shuffledQuestions = shuffleArray(questions);
+            document.getElementById('resultsScreen').classList.add('hidden');
+            document.getElementById('landingScreen').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
