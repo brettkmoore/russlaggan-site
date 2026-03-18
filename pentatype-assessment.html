@@ -528,10 +528,31 @@
             <p class="byline">The Pentatype Assessment</p>
             <p class="subtitle">by Russ Laggan & Spheramid System</p>
             <div class="description">
-                <p>Your natural communication style shapes how you build client relationships, deliver value, and close deals. This 40-question assessment reveals your primary and secondary Pentatype—the five archetypal communication patterns that drive real estate excellence.</p>
-                <p style="margin-top: 12px;">There are no right or wrong answers. Choose the option that resonates most with your natural instincts.</p>
+                <p>Your natural communication style shapes how you build client relationships, deliver value, and close deals. This 40-question assessment reveals your primary and secondary Pentatype — the five archetypal communication patterns that drive real estate excellence.</p>
+                <p style="margin-top: 12px;">Takes about 8-10 minutes. There are no right or wrong answers — choose what resonates most with your natural instincts.</p>
             </div>
-            <button class="btn" onclick="startAssessment()">Start Assessment</button>
+            <button class="btn" onclick="showEmailCapture()">Start Assessment</button>
+        </div>
+
+        <!-- EMAIL CAPTURE SCREEN -->
+        <div id="emailCaptureScreen" class="landing-screen hidden" style="text-align: center;">
+            <h1 style="font-size: 2rem; margin-bottom: 8px;">Before We Begin</h1>
+            <p class="subtitle" style="margin-bottom: 24px; color: rgba(255,255,255,0.6); font-size: 0.95rem;">We'll send your personalized results report — including your full Pentatype profile, sub-type analysis, and coaching insights from Russ — straight to your inbox.</p>
+            <div style="max-width: 380px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px;">
+                <input type="text" id="captureFirstName" placeholder="First name" required
+                    style="width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: #fff; font-size: 1rem; font-family: inherit; outline: none; transition: border-color 0.2s;"
+                    onfocus="this.style.borderColor='#EF5D17'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+                <input type="text" id="captureLastName" placeholder="Last name"
+                    style="width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: #fff; font-size: 1rem; font-family: inherit; outline: none; transition: border-color 0.2s;"
+                    onfocus="this.style.borderColor='#EF5D17'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+                <input type="email" id="captureEmail" placeholder="Email address" required
+                    style="width: 100%; padding: 14px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); color: #fff; font-size: 1rem; font-family: inherit; outline: none; transition: border-color 0.2s;"
+                    onfocus="this.style.borderColor='#EF5D17'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'"
+                    onkeydown="if(event.key==='Enter')startAssessment()">
+                <div id="captureError" style="color: #F96167; font-size: 0.82rem; min-height: 1.2em;"></div>
+                <button class="btn" onclick="startAssessment()" style="margin-top: 4px;">Begin Assessment →</button>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.75rem; color: rgba(255,255,255,0.35);">Your information is private and never shared. Unsubscribe anytime.</p>
         </div>
 
         <!-- ASSESSMENT SCREEN -->
@@ -573,12 +594,10 @@
             </div>
 
             <div class="email-section">
-                <h4>Want Your Full Profile?</h4>
-                <p>Enter your email for a detailed Pentatype breakdown including sub-type analysis and personalized coaching insights from Russ.</p>
-                <div id="successMessage" class="success-message hidden">Email saved! Check your inbox for your detailed report.</div>
-                <div class="email-input-group">
-                    <input type="email" id="emailInput" placeholder="your@email.com">
-                    <button class="btn" onclick="submitEmail()">Send Report</button>
+                <h4>Your Full Report Is On Its Way</h4>
+                <p id="emailConfirmText">We're sending your detailed Pentatype profile — including your sub-type analysis, personalized strengths and blind spots, and coaching insights from Russ — to your inbox now.</p>
+                <div style="margin-top: 12px; padding: 14px 20px; background: rgba(2,195,154,0.08); border: 1px solid rgba(2,195,154,0.2); border-radius: 10px; color: #02C39A; font-size: 0.9rem;">
+                    Check your inbox for your personalized PDF results report.
                 </div>
             </div>
 
@@ -1107,10 +1126,35 @@
 
         // START ASSESSMENT
         let assessmentStartTime = null;
+        let userData = { firstName: '', lastName: '', email: '' };
+
+        function showEmailCapture() {
+            document.getElementById('landingScreen').classList.add('hidden');
+            document.getElementById('emailCaptureScreen').classList.remove('hidden');
+            document.getElementById('captureFirstName').focus();
+        }
 
         function startAssessment() {
+            const firstName = document.getElementById('captureFirstName').value.trim();
+            const email = document.getElementById('captureEmail').value.trim();
+            const lastName = document.getElementById('captureLastName').value.trim();
+            const errEl = document.getElementById('captureError');
+
+            if (!firstName) {
+                errEl.textContent = 'Please enter your first name.';
+                document.getElementById('captureFirstName').focus();
+                return;
+            }
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                errEl.textContent = 'Please enter a valid email address.';
+                document.getElementById('captureEmail').focus();
+                return;
+            }
+            errEl.textContent = '';
+
+            userData = { firstName, lastName, email };
             assessmentStartTime = Date.now();
-            document.getElementById('landingScreen').classList.add('hidden');
+            document.getElementById('emailCaptureScreen').classList.add('hidden');
             document.getElementById('assessmentScreen').classList.remove('hidden');
             showQuestion(0);
         }
@@ -1202,6 +1246,9 @@
             const timeSpent = assessmentStartTime ? Math.round((Date.now() - assessmentStartTime) / 1000) : 0;
 
             sendToWebhook({
+                first_name: userData.firstName,
+                last_name: userData.lastName,
+                email: userData.email,
                 primaryType: types[primaryType].name,
                 secondaryType: types[secondaryType].name,
                 subtypeName: subtypeName,
@@ -1303,37 +1350,7 @@
             document.getElementById('subtypeInfo').appendChild(profileBtn);
         }
 
-        function submitEmail() {
-            const email = document.getElementById('emailInput').value;
-            if (email) {
-                localStorage.setItem('pentatype-email', email);
-
-                // Send email update to webhook
-                const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-                const primaryType = sorted[0][0];
-                const secondaryType = sorted[1][0];
-                const subtypeKey = `${primaryType}-${secondaryType}`;
-                sendToWebhook({
-                    email: email,
-                    primaryType: types[primaryType].name,
-                    secondaryType: types[secondaryType].name,
-                    subtypeName: document.querySelector('#subtypeText strong')?.textContent || subtypeKey,
-                    conciergeScore: scores.concierge,
-                    analystScore: scores.analyst,
-                    strategistScore: scores.strategist,
-                    visionaryScore: scores.visionary,
-                    advocateScore: scores.advocate,
-                    timeSpent: assessmentStartTime ? Math.round((Date.now() - assessmentStartTime) / 1000) : 0,
-                    profileURL: `https://russlaggan.com/types/${subtypeKey}.html`
-                });
-
-                document.getElementById('emailInput').value = '';
-                document.getElementById('successMessage').classList.remove('hidden');
-                setTimeout(() => {
-                    document.getElementById('successMessage').classList.add('hidden');
-                }, 3000);
-            }
-        }
+        // Email is now captured upfront before the assessment begins
 
         function restartAssessment() {
             currentQuestion = 0;
@@ -1347,7 +1364,14 @@
             answeredQuestions = [];
             shuffledQuestions = shuffleArray(questions);
             document.getElementById('resultsScreen').classList.add('hidden');
-            document.getElementById('landingScreen').classList.remove('hidden');
+            // If they already entered their info, skip straight to questions
+            if (userData.email) {
+                assessmentStartTime = Date.now();
+                document.getElementById('assessmentScreen').classList.remove('hidden');
+                showQuestion(0);
+            } else {
+                document.getElementById('landingScreen').classList.remove('hidden');
+            }
         }
     </script>
 </body>
