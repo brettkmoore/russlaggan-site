@@ -1245,13 +1245,18 @@
             const subtypeName = `Type ${typeNum}: ${primaryName}-${secondaryName}`;
             const timeSpent = assessmentStartTime ? Math.round((Date.now() - assessmentStartTime) / 1000) : 0;
 
+            // Strip "The " prefix for Apps Script compatibility
+            var primaryClean = types[primaryType].name.replace(/^The /, '');
+            var secondaryClean = types[secondaryType].name.replace(/^The /, '');
+
             sendToWebhook({
                 first_name: userData.firstName,
                 last_name: userData.lastName,
+                name: (userData.firstName + ' ' + userData.lastName).trim(),
                 email: userData.email,
-                primaryType: types[primaryType].name,
-                secondaryType: types[secondaryType].name,
-                subtypeName: subtypeName,
+                primaryType: primaryClean,
+                secondaryType: secondaryClean,
+                subtypeName: `Type ${typeNum}: ${primaryClean}-${secondaryClean}`,
                 conciergeScore: scores.concierge,
                 analystScore: scores.analyst,
                 strategistScore: scores.strategist,
